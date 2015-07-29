@@ -1,4 +1,5 @@
 var request = require("request"),
+    moment = require('moment'),
     keys = require('../api_keys/slack_keys');
   
 var bot_text;
@@ -77,9 +78,10 @@ var lunchSpots = [
   {
     "location": "https://www.google.com/maps/place/Caf%C3%A9+Chiquil%C3%ADn/@48.7707633,9.1557995,17z/data=!3m1!4b1!4m2!3m1!1s0x4799db4288f4ca6b:0xfe08c435eb4b5390",
     "restaurant": "Café Chiquilín",
-    "number": "coffee",
+    "number": "trident",
     "menu": "http://chiquilin.de/#wochenkarte",
-    "dayoff": 1,
+    "credit": "yes",
+    "dayoff": 1
   },
   {
     "location": "https://www.google.com/maps/place/Rappen/@48.7754963,9.165019,17.75z/data=!4m5!1m2!2m1!1srestaurant+near+me!3m1!1s0x0000000000000000:0xe2ff17ee3b15b1df",
@@ -94,13 +96,33 @@ var moreLunchSpots = [
     "location": "https://www.google.com/maps/place/STUGGI+Burger/@48.774937,9.1552269,17z/data=!3m1!4b1!4m7!1m4!3m3!1s0x4799db6a6cff51d9:0x5161d09564cb0a09!2sSTUGGI+Burger!3b1!3m1!1s0x4799db6a6cff51d9:0x5161d09564cb0a09",
     "restaurant": "STUGGI Burger",
     "number": "hamburger",
-    "menu": "https://www.facebook.com/StuggiBurger"
+    "menu": "https://www.facebook.com/StuggiBurger",
+    "vacationFrom": "2015-08-17",
+    "vacationTo": "2015-08-30"
   },
   {
     "location": "https://www.google.de/maps/place/Roteb%C3%BChlstra%C3%9Fe+121,+70178+Stuttgart/@48.77072,9.15919,17z/data=!4m7!1m4!3m3!1s0x4799db43a769e9b9:0x23ff1981c4da8e1e!2sRoteb%C3%BChlstra%C3%9Fe+121,+70178+Stuttgart!3b1!3m1!1s0x4799db43a769e9b9:0x23ff1981c4da8e1e",
     "restaurant": "Tavolino",
     "number": "spaghetti",
     "menu": "http://www.tavolino.info/Wochenempfehlung/"
+  },
+  {
+    "location": "https://www.google.com/maps/place/Bugan/@48.7716675,9.1731329,17z/data=!3m1!4b1!4m2!3m1!1s0x4799db4eb6ea2a63:0x83b10e463dab09b6",
+    "restaurant": "Bugan",
+    "number": "taco",
+    "menu": "http://imgur.com/a/bRVHg"
+  },
+  {
+    "location": "https://www.google.com/maps/place/Gastst%C3%A4tte+Wohnzimmer/@48.7761901,9.1620446,17z/data=!3m1!4b1!4m2!3m1!1s0x4799db40c4c92d15:0xd1022b8a12101e5b",
+    "restaurant": "Wohnzimmer",
+    "number": "seat",
+    "menu": "http://www.unserwohnzimmer.de/sites/wochenkarte.php"
+  },
+  {
+    "location": "https://www.google.com/maps/place/Cafe+Moulu/@48.7761901,9.1620446,17z/data=!4m7!1m4!3m3!1s0x4799db40c4c92d15:0xd1022b8a12101e5b!2sGastst%C3%A4tte+Wohnzimmer!3b1!3m1!1s0x0000000000000000:0xa369a06d9813a122",
+    "restaurant": "Café Moulu",
+    "number": "coffee",
+    "menu": "https://www.facebook.com/media/set/?set=a.729087223873898.1073741836.397970303652260&type=3"
   }
 ]
 
@@ -123,16 +145,34 @@ var details = ''; // menu and payment info for restaurants
 var moreDetails = ''; // menu and payment info for moreRestaurants
 var specials = ''; // more and rejected options
 
+function isOnVacation(from, to) {
+  var dateFrom = from;
+  var dateTo = to;
+  var rightNow = new Date();
+  var dateCheck = rightNow
+
+  var d1 = dateFrom.split("/");
+  var d2 = dateTo.split("/");
+  var c = dateCheck.split("/");
+
+  var from = new Date(d1[2], d1[1]-1, d1[0]);  // -1 because months are from 0 to 11
+  var to   = new Date(d2[2], d2[1]-1, d2[0]);
+  var check = new Date(c[2], c[1]-1, c[0]);
+
+  var onVacation = check > from && check < to;
+  console.log(onVacation);
+}
+
 for (var i = 0; i < lunchSpots.length; i++) { // go through all lunchspots
   var today = new Date(); // get today's date
-  if (lunchSpots[i].dayoff == today.getDay()) { // if lunchspot is closed today don't show its entry
+  if (lunchSpots[i].dayoff == today.getDay() || moment().isBetween(lunchSpots[i].vacationFrom, lunchSpots[i].vacationTo) == 1) { // if lunchspot is closed today don't show its entry
     var entry = ""
   } else {
     var entry = ":" + lunchSpots[i].number + ": <" + lunchSpots[i].location + "|" +  lunchSpots[i].restaurant + ">\n";
   }
   restaurants = restaurants + entry; // add restaurant names with google maps link to restaurants
 
-  if (lunchSpots[i].dayoff == today.getDay()) { // if lunchspot is closed today don't show its emoji
+  if (lunchSpots[i].dayoff == today.getDay() || moment().isBetween(lunchSpots[i].vacationFrom, lunchSpots[i].vacationTo) == 1) { // if lunchspot is closed today don't show its emoji
     var emojis = ""
   } else if(lunchSpots[i].menu && lunchSpots[i].credit) { // if lunchspot has payment option other than cash display card emoji
     var emojis = "<" + lunchSpots[i].menu + "|:fork_and_knife:> :credit_card:\n"
@@ -145,11 +185,18 @@ for (var i = 0; i < lunchSpots.length; i++) { // go through all lunchspots
   details = details + emojis; // add emojis to details
 };
 
-for (var i = 0; i < moreLunchSpots.length; i++) { // go through all secondary lunchspots
-  var entry = ":" + moreLunchSpots[i].number + ": <" + moreLunchSpots[i].location + "|" +  moreLunchSpots[i].restaurant + ">\n";
-  moreRestaurants = moreRestaurants + entry; // add restaurant names with google maps link to moreRestaurants
+for (var i = 0; i < moreLunchSpots.length; i++) { // go through all lunchspots
+  var today = new Date(); // get today's date
+  if (moreLunchSpots[i].dayoff == today.getDay() || moment().isBetween(moreLunchSpots[i].vacationFrom, moreLunchSpots[i].vacationTo) == 1) { // if lunchspot is closed today don't show its entry
+    var entry = ""
+  } else {
+    var entry = ":" + moreLunchSpots[i].number + ": <" + moreLunchSpots[i].location + "|" +  moreLunchSpots[i].restaurant + ">\n";
+  }
+  moreRestaurants = moreRestaurants + entry; // add restaurant names with google maps link to restaurants
 
-  if(moreLunchSpots[i].menu && moreLunchSpots[i].credit) { // if lunchspot has payment option other than cash display card emoji
+  if (moreLunchSpots[i].dayoff == today.getDay() || moment().isBetween(moreLunchSpots[i].vacationFrom, moreLunchSpots[i].vacationTo) == 1) { // if lunchspot is closed today don't show its emoji
+    var emojis = ""
+  } else if(moreLunchSpots[i].menu && moreLunchSpots[i].credit) { // if lunchspot has payment option other than cash display card emoji
     var emojis = "<" + moreLunchSpots[i].menu + "|:fork_and_knife:> :credit_card:\n"
   } else if(moreLunchSpots[i].menu) { // if lunchspot only has menu only display menu emoji
     var emojis = "<" + moreLunchSpots[i].menu + "|:fork_and_knife:>\n"
@@ -157,7 +204,7 @@ for (var i = 0; i < moreLunchSpots.length; i++) { // go through all secondary lu
     var emojis = ":grey_question:\n"
   }
 
-  moreDetails = moreDetails + emojis;  // add emojis to moreDetails
+  moreDetails = moreDetails + emojis; // add emojis to details
 };
 
 for (var i = 0; i < moreOptions.length; i++) { // go through all special options
@@ -222,13 +269,13 @@ var payload = {
           short: true
         },
         {
-          title: "Weitere Restaurants",
+          title: "",
           value: moreRestaurants,
           short: true
 
         },
         {
-          title: "Details",
+          title: "",
           value: moreDetails,
           short: true
         },
