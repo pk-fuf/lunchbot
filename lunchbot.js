@@ -33,13 +33,15 @@ var lunchSpots = [
     "location": "https://www.google.com/maps/place/Lumen/@48.7723682,9.156562,17z/data=!4m5!1m2!2m1!1srestaurant+near+me!3m1!1s0x0000000000000000:0xf66f1446b4ea8e79",
     "restaurant": "Lumen",
     "number": "bulb",
-    "menu": "http://lumen-stuttgart.de/tag/tageskarte/",
+    "menu": "http://lumen-stuttgart.de/tag/tageskarte/"
   },
   {
     "location": "https://www.google.com/maps/place/Wirtshaus+Troll/@48.7717122,9.1588948,17.25z/data=!4m5!1m2!2m1!1srestaurant+near+me!3m1!1s0x0000000000000000:0x08019b87fa5d0da4",
     "restaurant": "Wirtshaus Troll",
     "number": "japanese_ogre",
     "menu": "http://www.wirtshaus-troll.de/Tagesessen.pdf",
+    "vacationFrom": "2015-07-30",
+    "vacationTo": "2015-09-12"
   },
   {
     "location": "https://www.google.com/maps/place/Rote+Kapelle/@48.7717538,9.1595805,17.25z/data=!4m5!1m2!2m1!1srestaurant+near+me!3m1!1s0x0000000000000000:0x8b0d90e1a74346ec",
@@ -61,7 +63,9 @@ var lunchSpots = [
     "location": "https://www.google.com/maps/place/Pizzeria+La+Piccola+Napoli/@48.7714401,9.1577603,17z/data=!4m5!1m2!2m1!1srestaurant+near+me!3m1!1s0x0000000000000000:0xcba2dec193341075",
     "restaurant": "Pizzeria La Piccola Napoli",
     "number": "pizza",
-    "menu": "http://www.piccola-napoli.de/mittag.html"
+    "menu": "http://www.piccola-napoli.de/mittag.html",
+    "vacationFrom": "2015-08-03",
+    "vacationTo": "2015-09-02"
   },
   {
     "location": "https://www.google.com/maps/place/Restaurant+Vapiano+Stuttgart+II/@48.7781245,9.1689675,15.75z/data=!4m5!1m2!2m1!1svapiano!3m1!1s0x0000000000000000:0x843d7c274ccf033f",
@@ -123,6 +127,12 @@ var moreLunchSpots = [
     "restaurant": "Café Moulu",
     "number": "coffee",
     "menu": "https://www.facebook.com/media/set/?set=a.729087223873898.1073741836.397970303652260&type=3"
+  },
+  {
+    "location": "https://encrypted.google.com/maps/place/Mai+%26+Sushi/@48.7725488,9.1566256,17z/data=!4m2!3m1!1s0x0:0xffc4719f7c4108df",
+    "restaurant": "Mai & Sushi",
+    "number": "sushi",
+    "menu": "https://www.facebook.com/Sushi.and.more/photos/pb.400214640042962.-2207520000.1438589211./941992522531835/?type=3&theater"
   }
 ]
 
@@ -243,7 +253,7 @@ for (var i = 0; i < moreOptions.length; i++) { // go through all special options
 // lunchEntries(lunchSpots, restaurants, details);
 // lunchEntries(moreLunchSpots, moreRestaurants, moreDetails);
 
-bot_text = 'Mahlzeit, worauf habt ihr heute Lust?\nWählen könnt ihr mit `+:bulb:`, `+:cow:` etc. oder über das Zahnrad in der rechten Ecke dieser Nachricht bei "Reaktionen".';
+bot_text = 'Mahlzeit, worauf habt ihr heute Lust?\nWählen könnt ihr mit `+:bulb:`, `+:cow:` etc. oder über das Zahnrad in der rechten Ecke dieser Nachricht bei "Reaktionen".\n*Achtung:* Es ist August und einige der Restaurants sind im Urlaub. Daher reduziert sich unsere Liste diesen Monat.';
 
 console.log(bot_text);
 
