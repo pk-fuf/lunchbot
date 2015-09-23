@@ -1,5 +1,4 @@
-var Xray = require('x-ray'),
-    moment  = require('moment'),
+var moment  = require('moment'),
     request = require('request'),
     keys    = require('../api_keys/slack_keys');
   
@@ -41,8 +40,8 @@ var lunchSpots = [
     "restaurant": "Wirtshaus Troll",
     "number": "wirtshaus_troll",
     "menu": "http://www.wirtshaus-troll.de/Tagesessen.pdf",
-    "vacationFrom": "2015-07-30",
-    "vacationTo": "2015-09-12"
+    "vacationFrom": "2015-07-29",
+    "vacationTo": "2015-09-13"
   },
   {
     "location": "https://www.google.com/maps/place/Rote+Kapelle/@48.7717538,9.1595805,17.25z/",
@@ -61,16 +60,16 @@ var lunchSpots = [
     "restaurant": "Pizzeria La Piccola Napoli",
     "number": "napoli",
     "menu": "http://www.piccola-napoli.de/mittag.html",
-    "vacationFrom": "2015-08-03",
-    "vacationTo": "2015-09-02"
+    "vacationFrom": "2015-08-02",
+    "vacationTo": "2015-09-03"
   },
   {
     "location": "https://www.google.com/maps/place/Rappen/@48.7754963,9.165019,17.75z/",
     "restaurant": "Rappen",
     "number": "rappen",
     "menu": "http://www.rappen-stuttgart.de/",
-    "vacationFrom": "2015-08-31",
-    "vacationTo": "2015-09-11"
+    "vacationFrom": "2015-08-30",
+    "vacationTo": "2015-09-12"
   },
   {
     "location": "https://www.google.com/maps/place/Caf%C3%A9+Chiquil%C3%ADn/@48.7707633,9.1557995,17z/",
@@ -175,11 +174,9 @@ var moreOptions = [
   }
 ]
 
-var xray = new Xray();
 var restaurants = ''; // first 10 restaurants
 var moreRestaurants = ''; // 10 more restaurants
 var specials = ''; // more and rejected options
-var highlights = '' // scraped meal for the current day
 
 function isOnVacation(from, to) {
   var dateFrom = from;
@@ -198,15 +195,6 @@ function isOnVacation(from, to) {
   var onVacation = check > from && check < to;
 }
 
-xray('http://rote-kapelle.de/cashs/mittags.php', { meal: '.papa tr:nth-child(6) span', price: '.papa tr:nth-child(6) span.tahoma11'})(function(err, meal) {  
-  // console.log(':rote-kapelle: ' + meal.meal.slice(0,-1) + ' - _' + meal.price.slice(0,-2) + '€_\n');
-  // highlights.push(':rote-kapelle: ' + meal.meal.slice(0,-1) + ' - _' + meal.price.slice(0,-2) + '€_\n');
-  highlights = highlights + meal.meal
-  console.log(meal.meal + " log")
-})
-
-console.log(highlights + " variable")
-
 for (var i = 0; i < lunchSpots.length; i++) { // go through all lunchspots
   var today = new Date(); // get today's date
   if (lunchSpots[i].dayoff == today.getDay() || moment().isBetween(lunchSpots[i].vacationFrom, lunchSpots[i].vacationTo) == 1) { // if lunchspot is closed today don't show its entry
@@ -219,17 +207,6 @@ for (var i = 0; i < lunchSpots.length; i++) { // go through all lunchspots
     } else {
       var entry = "<" + lunchSpots[i].location + "|:" + lunchSpots[i].number + ":> " +  lunchSpots[i].restaurant + "\n"
     }
-
-    if (lunchSpots[i].restaurant == 'Rote Kapelle') {
-      xray('http://rote-kapelle.de/cashs/mittags.php', { meal: '.papa tr:nth-child(6) span', price: '.papa tr:nth-child(6) span.tahoma11'})(function(err, meal) {
-        ':rote-kapelle: ' + meal.meal.slice(0,-1) + ' - _' + meal.price.slice(0,-2) + '€_\n';
-      })
-    } else if (lunchSpots[i].restaurant == 'Wohnzimmer') {
-      xray('http://www.unserwohnzimmer.de/sites/wochenkarte.php', { meal: '#tagesessen > p:nth-child(12)', price: '#tagesessen > p:nth-child(13)'})(function(err, meal) {
-        ':wohnzimmer: ' + meal.meal.slice(0,-3) + ' - _' + meal.price + '_\n';
-      })
-    };
-    // highlights = highlights + todaysMeal;
   }
   restaurants = restaurants + entry; // add restaurant names with google maps link to restaurants
 };
