@@ -1,3 +1,5 @@
+# Lunch-Bot 2.0
+
 import math
 import requests
 import slackweb
