@@ -5,7 +5,7 @@ import slackkeys
 from bs4 import BeautifulSoup
 from datetime import datetime
 
-slack = slackweb.Slack(url=slackkeys.slackKeys['codinggoat'])
+slack = slackweb.Slack(url=slackkeys.slackKeys['fuf'])
 
 weeklySpots = [
   {
@@ -249,7 +249,7 @@ weekly_content = restaurants(weeklySpots)
 static_content = restaurants(staticSpots)
 additional_content = ":new: Ich will woanders hin (bitte etwas vorschlagen)\n:x: Ich will nicht/hab mein eigenes Essen dabei"
 legend_content = "<https://127.0.0.1|Txt> `Speisekarte`\n:wirtshaus_troll: `Google Maps Link`\n:credit_card: `Kartenzahlung möglich`"
-feedback_content = "Version: 2.0 (Changelog)\nPatrick Kontschak\npk@fuf.de"
+feedback_content = "Version: 2.0 (<https://github.com/pk-fuf/lunchbot/commit/9cb247a1c3bc150e3ec647528f3324d781321c50|Changelog>)\nPatrick Kontschak\npk@fuf.de"
 
 weekly = {"title": "Restaurants (mit wechselnden Wochengerichten)", "value": weekly_content, "short": True}
 static = {"title": "Restaurants (mit festgelegtem Menü)", "value": static_content, "short": True}
