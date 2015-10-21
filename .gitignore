@@ -25,3 +25,6 @@ Temporary Items
 
 # Node
 node_modules
+
+slackkeys.py
+__pycache__
