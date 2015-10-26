@@ -222,28 +222,33 @@ with requests.Session() as s:
     chiquilinToday = "\n:chiquilin: " + chiquilinWednesday
   elif toDay == 'Thursday':
     chiquilinToday = "\n:chiquilin: " + chiquilinThursday
-  else:
+  elif toDay == 'Friday':
     chiquilinToday = "\n:chiquilin: " + chiquilinFriday
 
   wohnzimmerUrl = s.get('http://www.unserwohnzimmer.de/sites/wochenkarte.php')
   wohnzimmerSoup = BeautifulSoup(wohnzimmerUrl.content, 'html5lib')
   wohnzimmerFull = wohnzimmerSoup.find('div', {'id': 'tagesessen'}).find_all('p')
-  wohnzimmerMonday = str(wohnzimmerFull[0].text).splitlines()[0]
-  wohnzimmerTuesday = str(wohnzimmerFull[2].text).splitlines()[0]
-  wohnzimmerWednesday = str(wohnzimmerFull[4].text).splitlines()[0]
-  wohnzimmerThursday = str(wohnzimmerFull[6].text).splitlines()[0]
-  wohnzimmerFriday = str(wohnzimmerFull[8].text).splitlines()[0]
-  wohnzimmerToday = ''
-  if toDay == 'Monday':
-    wohnzimmerToday = "\n:wohnzimmer: " + wohnzimmerMonday
-  elif toDay == 'Tuesday':
-    wohnzimmerToday = "\n:wohnzimmer: " + wohnzimmerTuesday
-  elif toDay == 'Wednesday':
-    wohnzimmerToday = "\n:wohnzimmer: " + wohnzimmerWednesday
-  elif toDay == 'Thursday':
-    wohnzimmerToday = "\n:wohnzimmer: " + wohnzimmerThursday
+  wohnzimmerHeadline = str(wohnzimmerSoup.find('div', {'id': 'weekly_content'}).find_all('h2')[0].text)[:11]
+  if wohnzimmerHeadline == "Burgerwoche":
+    wohnzimmerToday = "\n:wohnzimmer: Burger Woche"
   else:
-    wohnzimmerToday = "\n:wohnzimmer: " + wohnzimmerFriday
+    wohnzimmerMonday = str(wohnzimmerFull[0].text).splitlines()[0]
+    wohnzimmerTuesday = str(wohnzimmerFull[2].text).splitlines()[0]
+    wohnzimmerWednesday = str(wohnzimmerFull[4].text).splitlines()[0]
+    wohnzimmerThursday = str(wohnzimmerFull[6].text).splitlines()[0]
+    wohnzimmerFriday = str(wohnzimmerFull[8].text).splitlines()[0]
+    wohnzimmerToday = ''
+    if toDay == 'Monday':
+      wohnzimmerToday = "\n:wohnzimmer: " + wohnzimmerMonday
+    elif toDay == 'Tuesday':
+      wohnzimmerToday = "\n:wohnzimmer: " + wohnzimmerTuesday
+    elif toDay == 'Wednesday':
+      wohnzimmerToday = "\n:wohnzimmer: " + wohnzimmerWednesday
+    elif toDay == 'Thursday':
+      wohnzimmerToday = "\n:wohnzimmer: " + wohnzimmerThursday
+    else:
+      wohnzimmerToday = "\n:wohnzimmer: " + wohnzimmerFriday
+
 
 bot_text = 'Mahlzeit, worauf habt ihr heute Lust?\nWählen könnt ihr mit `+:lumen:`, `+:wirtshaus_troll:`, `+:bugan:` etc. oder über das Zahnrad in der rechten Ecke dieser Nachricht bei "Add a reaction".'
 
