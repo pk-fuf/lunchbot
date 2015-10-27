@@ -185,11 +185,11 @@ with requests.Session() as s:
   napoliUrl = s.get('http://www.piccola-napoli.de/datei.html')
   napoliSoup = BeautifulSoup(napoliUrl.content, 'html5lib')
   napoliFull = napoliSoup.find_all('p')
-  napoliMonday = str(napoliFull[4].text).splitlines()[1].replace('\t', '').replace('€', '') + "(" + str(napoliFull[5].text).splitlines()[0].replace('\t', '') + ' ' + str(napoliFull[5].text).splitlines()[1].replace('\t', '') + ")"
-  napoliTuesday = str(napoliFull[11].text).splitlines()[1].replace('\t', '').replace('€', '') + "(" + str(napoliFull[12].text).splitlines()[0].replace('\t', '') + ' ' + str(napoliFull[12].text).splitlines()[1].replace('\t', '') + ")"
-  napoliWednesday = str(napoliFull[18].text).splitlines()[1].replace('\t', '').replace('€', '') + "(" + str(napoliFull[19].text).splitlines()[0].replace('\t', '') + ' ' + str(napoliFull[19].text).splitlines()[1].replace('\t', '') + ")"
-  napoliThursday = str(napoliFull[25].text).splitlines()[1].replace('\t', '').replace('€', '') + "(" + str(napoliFull[25].text).splitlines()[0].replace('\t', '') + ' ' + str(napoliFull[25].text).splitlines()[1].replace('\t', '') + ")"
-  napoliFriday = str(napoliFull[32].text).splitlines()[1].replace('\t', '').replace('€', '') + "(" + str(napoliFull[33].text).splitlines()[0].replace('\t', '') + ' ' + str(napoliFull[33].text).splitlines()[1].replace('\t', '') + ")"
+  napoliMonday = str(napoliFull[4].text).splitlines()[1].replace('\t', '').replace('€', '') + " (" + str(napoliFull[5].text).splitlines()[0].replace('\t', '') + ' ' + str(napoliFull[5].text).splitlines()[1].replace('\t', '') + ")"
+  napoliTuesday = str(napoliFull[11].text).splitlines()[1].replace('\t', '').replace('€', '') + " (" + str(napoliFull[12].text).splitlines()[0].replace('\t', '') + ' ' + str(napoliFull[12].text).splitlines()[1].replace('\t', '') + ")"
+  napoliWednesday = str(napoliFull[18].text).splitlines()[1].replace('\t', '').replace('€', '') + " (" + str(napoliFull[19].text).splitlines()[0].replace('\t', '') + ' ' + str(napoliFull[19].text).splitlines()[1].replace('\t', '') + ")"
+  napoliThursday = str(napoliFull[25].text).splitlines()[1].replace('\t', '').replace('€', '') + " (" + str(napoliFull[25].text).splitlines()[0].replace('\t', '') + ' ' + str(napoliFull[25].text).splitlines()[1].replace('\t', '') + ")"
+  napoliFriday = str(napoliFull[32].text).splitlines()[1].replace('\t', '').replace('€', '') + " (" + str(napoliFull[33].text).splitlines()[0].replace('\t', '') + ' ' + str(napoliFull[33].text).splitlines()[1].replace('\t', '') + ")"
   napoliToday = ''
   if toDay == 'Monday':
     napoliToday = "\n:napoli: " + napoliMonday
