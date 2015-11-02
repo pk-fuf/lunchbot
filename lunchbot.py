@@ -41,8 +41,8 @@ weeklySpots = [
     "restaurant": "Pizzeria La Piccola Napoli",
     "number": "napoli",
     "menu": "http://www.piccola-napoli.de/mittag.html",
-    "vacationFrom": "2015-08-02",
-    "vacationTo": "2015-09-03"
+    "vacationFrom": "2015-11-01",
+    "vacationTo": "2015-11-03"
   },
   {
     "location": "https://www.google.com/maps/place/Rappen/@48.7754963,9.165019,17.75z/",
@@ -58,7 +58,7 @@ weeklySpots = [
     "number": "chiquilin",
     "menu": "http://chiquilin.de/#wochenkarte",
     "credit": "yes",
-    "dayoff": 1
+    "dayoff": 'Monday'
   },
   {
     "location": "https://www.google.com/maps/place/Cafe+Moulu/@48.7761901,9.1620446,17z/",
@@ -157,12 +157,16 @@ def weekDay(year, month, day):
     dayOfWeek %= 7
     return week[math.floor(dayOfWeek)]
 
+toDay = weekDay(int(str(datetime.now())[:4]), int(str(datetime.now())[5:7].lstrip('0')), int(str(datetime.now())[8:10]))
+
 
 def restaurants(spots):
   destination = ''
   for x in range(0, len(spots)):
     entry = ''
-    if 'vacationFrom' in spots[x] and spots[x]['vacationFrom'] < str(datetime.now()) < spots[x]['vacationTo']:
+    if 'dayoff' in spots[x] and spots[x]['dayoff'] == toDay:
+      entry = ''
+    elif 'vacationFrom' in spots[x] and spots[x]['vacationFrom'] < str(datetime.now()) < spots[x]['vacationTo']:
       entry = ''
     else:
       if 'menu' in spots[x] and 'credit' in spots[x]:  # if lunchspot has payment option other than cash display card emoji
@@ -174,8 +178,6 @@ def restaurants(spots):
     destination += entry
   return destination
 
-toDay = weekDay(int(str(datetime.now())[:4]), int(str(datetime.now())[5:7].lstrip('0')), int(str(datetime.now())[8:10]))
-
 with requests.Session() as s:
   kapelleUrl = s.get('http://rote-kapelle.de/cashs/mittags.php')
   kapelleSoup = BeautifulSoup(kapelleUrl.content, 'html5lib')
@@ -185,22 +187,23 @@ with requests.Session() as s:
   napoliUrl = s.get('http://www.piccola-napoli.de/datei.html')
   napoliSoup = BeautifulSoup(napoliUrl.content, 'html5lib')
   napoliFull = napoliSoup.find_all('p')
-  napoliMonday = str(napoliFull[4].text).splitlines()[1].replace('\t', '').replace('€', '') + " (" + str(napoliFull[5].text).splitlines()[0].replace('\t', '') + ' ' + str(napoliFull[5].text).splitlines()[1].replace('\t', '') + ")"
-  napoliTuesday = str(napoliFull[11].text).splitlines()[1].replace('\t', '').replace('€', '') + " (" + str(napoliFull[12].text).splitlines()[0].replace('\t', '') + ' ' + str(napoliFull[12].text).splitlines()[1].replace('\t', '') + ")"
-  napoliWednesday = str(napoliFull[18].text).splitlines()[1].replace('\t', '').replace('€', '') + " (" + str(napoliFull[19].text).splitlines()[0].replace('\t', '') + ' ' + str(napoliFull[19].text).splitlines()[1].replace('\t', '') + ")"
-  napoliThursday = str(napoliFull[25].text).splitlines()[1].replace('\t', '').replace('€', '') + " (" + str(napoliFull[25].text).splitlines()[0].replace('\t', '') + ' ' + str(napoliFull[25].text).splitlines()[1].replace('\t', '') + ")"
-  napoliFriday = str(napoliFull[32].text).splitlines()[1].replace('\t', '').replace('€', '') + " (" + str(napoliFull[33].text).splitlines()[0].replace('\t', '') + ' ' + str(napoliFull[33].text).splitlines()[1].replace('\t', '') + ")"
   napoliToday = ''
-  if toDay == 'Monday':
-    napoliToday = "\n:napoli: " + napoliMonday
-  elif toDay == 'Tuesday':
-    napoliToday = "\n:napoli: " + napoliTuesday
-  elif toDay == 'Wednesday':
-    napoliToday = "\n:napoli: " + napoliWednesday
-  elif toDay == 'Thursday':
-    napoliToday = "\n:napoli: " + napoliThursday
-  else:
-    napoliToday = "\n:napoli: " + napoliFriday
+  if len(napoliFull) > 3:
+    napoliMonday = str(napoliFull[4].text).splitlines()[1].replace('\t', '').replace('€', '') + " (" + str(napoliFull[5].text).splitlines()[0].replace('\t', '') + ' ' + str(napoliFull[5].text).splitlines()[1].replace('\t', '') + ")"
+    napoliTuesday = str(napoliFull[11].text).splitlines()[1].replace('\t', '').replace('€', '') + " (" + str(napoliFull[12].text).splitlines()[0].replace('\t', '') + ' ' + str(napoliFull[12].text).splitlines()[1].replace('\t', '') + ")"
+    napoliWednesday = str(napoliFull[18].text).splitlines()[1].replace('\t', '').replace('€', '') + " (" + str(napoliFull[19].text).splitlines()[0].replace('\t', '') + ' ' + str(napoliFull[19].text).splitlines()[1].replace('\t', '') + ")"
+    napoliThursday = str(napoliFull[25].text).splitlines()[1].replace('\t', '').replace('€', '') + " (" + str(napoliFull[25].text).splitlines()[0].replace('\t', '') + ' ' + str(napoliFull[25].text).splitlines()[1].replace('\t', '') + ")"
+    napoliFriday = str(napoliFull[32].text).splitlines()[1].replace('\t', '').replace('€', '') + " (" + str(napoliFull[33].text).splitlines()[0].replace('\t', '') + ' ' + str(napoliFull[33].text).splitlines()[1].replace('\t', '') + ")"
+    if toDay == 'Monday':
+      napoliToday = "\n:napoli: " + napoliMonday
+    elif toDay == 'Tuesday':
+      napoliToday = "\n:napoli: " + napoliTuesday
+    elif toDay == 'Wednesday':
+      napoliToday = "\n:napoli: " + napoliWednesday
+    elif toDay == 'Thursday':
+      napoliToday = "\n:napoli: " + napoliThursday
+    else:
+      napoliToday = "\n:napoli: " + napoliFriday
 
   rappenUrl = s.get('http://www.rappen-stuttgart.de/')
   rappenSoup = BeautifulSoup(rappenUrl.content, 'html5lib')
@@ -211,11 +214,11 @@ with requests.Session() as s:
   chiquilinUrl = s.get('http://chiquilin.de/')
   chiquilinSoup = BeautifulSoup(chiquilinUrl.content.decode('utf-8'), 'html5lib')
   chiquilinFull = chiquilinSoup.find('section', {'id': 'wochenkarte'}).find_all('h3')
+  chiquilinToday = ''
   chiquilinTuesday = ' '.join(str(chiquilinFull[11].text).splitlines())
   chiquilinWednesday = ' '.join(str(chiquilinFull[14].text).splitlines())
   chiquilinThursday = ' '.join(str(chiquilinFull[19].text).splitlines())
   chiquilinFriday = ' '.join(str(chiquilinFull[25].text).splitlines())
-  chiquilinToday = ''
   if toDay == 'Tuesday':
     chiquilinToday = "\n:chiquilin: " + chiquilinTuesday
   elif toDay == 'Wednesday':
