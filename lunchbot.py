@@ -58,22 +58,22 @@ with requests.Session() as s:
   napoliSoup = BeautifulSoup(napoliUrl.content, 'html5lib')
   napoliFull = napoliSoup.find_all('p')
   napoliToday = ''
-  # if len(napoliFull) > 3:
-  #   napoliMonday = str(napoliFull[4].text).splitlines()[1].replace('\t', '').replace('€', '') + " (" + str(napoliFull[5].text).splitlines()[0].replace('\t', '') + ' ' + str(napoliFull[5].text).splitlines()[1].replace('\t', '') + ")"
-  #   napoliTuesday = str(napoliFull[11].text).splitlines()[1].replace('\t', '').replace('€', '') + " (" + str(napoliFull[12].text).splitlines()[0].replace('\t', '') + ' ' + str(napoliFull[12].text).splitlines()[1].replace('\t', '') + ")"
-  #   napoliWednesday = str(napoliFull[18].text).splitlines()[1].replace('\t', '').replace('€', '') + " (" + str(napoliFull[19].text).splitlines()[0].replace('\t', '') + ' ' + str(napoliFull[19].text).splitlines()[1].replace('\t', '') + ")"
-  #   napoliThursday = str(napoliFull[25].text).splitlines()[1].replace('\t', '').replace('€', '') + " (" + str(napoliFull[25].text).splitlines()[0].replace('\t', '') + ' ' + str(napoliFull[25].text).splitlines()[1].replace('\t', '') + ")"
-  #   napoliFriday = str(napoliFull[32].text).splitlines()[1].replace('\t', '').replace('€', '') + " (" + str(napoliFull[33].text).splitlines()[0].replace('\t', '') + ' ' + str(napoliFull[33].text).splitlines()[1].replace('\t', '') + ")"
-  #   if toDay == 'Monday':
-  #     napoliToday = "\n:napoli: " + napoliMonday
-  #   elif toDay == 'Tuesday':
-  #     napoliToday = "\n:napoli: " + napoliTuesday
-  #   elif toDay == 'Wednesday':
-  #     napoliToday = "\n:napoli: " + napoliWednesday
-  #   elif toDay == 'Thursday':
-  #     napoliToday = "\n:napoli: " + napoliThursday
-  #   else:
-  #     napoliToday = "\n:napoli: " + napoliFriday
+  if len(napoliFull) > 3:
+    napoliMonday = str(napoliFull[4].text).splitlines()[1].replace('\t', '').replace('€', '') + " (" + str(napoliFull[5].text).splitlines()[0].replace('\t', '') + ' ' + str(napoliFull[5].text).splitlines()[1].replace('\t', '') + ")"
+    napoliTuesday = str(napoliFull[11].text).splitlines()[1].replace('\t', '').replace('€', '') + " (" + str(napoliFull[12].text).splitlines()[0].replace('\t', '') + ' ' + str(napoliFull[12].text).splitlines()[1].replace('\t', '') + ")"
+    napoliWednesday = str(napoliFull[18].text).splitlines()[1].replace('\t', '').replace('€', '') + " (" + str(napoliFull[19].text).splitlines()[0].replace('\t', '') + ' ' + str(napoliFull[19].text).splitlines()[1].replace('\t', '') + ")"
+    napoliThursday = str(napoliFull[25].text).splitlines()[1].replace('\t', '').replace('€', '') + " (" + str(napoliFull[25].text).splitlines()[0].replace('\t', '') + ' ' + str(napoliFull[25].text).splitlines()[1].replace('\t', '') + ")"
+    napoliFriday = str(napoliFull[32].text).splitlines()[1].replace('\t', '').replace('€', '') + " (" + str(napoliFull[33].text).splitlines()[0].replace('\t', '') + ' ' + str(napoliFull[33].text).splitlines()[1].replace('\t', '') + ")"
+    if toDay == 'Monday':
+      napoliToday = "\n:napoli: " + napoliMonday
+    elif toDay == 'Tuesday':
+      napoliToday = "\n:napoli: " + napoliTuesday
+    elif toDay == 'Wednesday':
+      napoliToday = "\n:napoli: " + napoliWednesday
+    elif toDay == 'Thursday':
+      napoliToday = "\n:napoli: " + napoliThursday
+    else:
+      napoliToday = "\n:napoli: " + napoliFriday
 
   rappenUrl = s.get('http://www.rappen-stuttgart.de/')
   rappenSoup = BeautifulSoup(rappenUrl.content, 'html5lib')
@@ -127,7 +127,7 @@ with requests.Session() as s:
         wohnzimmerToday = "\n:wohnzimmer: " + wohnzimmerFriday
 
 
-bot_text = 'Mahlzeit, worauf habt ihr heute Lust?\nWählen könnt ihr mit `+:lumen:`, `+:wirtshaus_troll:`, `+:bugan:` etc. oder über das Zahnrad in der rechten Ecke dieser Nachricht bei "Add a reaction".\n*Tavolino hat noch immer das Wochenmenü von letzter Woche! Troll hat diese Woche erst ab 16 Uhr auf.*'
+bot_text = 'Mahlzeit, worauf habt ihr heute Lust?\nWählen könnt ihr mit `+:lumen:`, `+:wirtshaus_troll:`, `+:bugan:` etc. oder über das Zahnrad in der rechten Ecke dieser Nachricht bei "Add a reaction".\n*Das Wochenmenü vom Troll funktioniert momentan nicht.*'
 
 weekly_content = restaurants(restaurantlist.weeklySpots)
 static_content = restaurants(restaurantlist.staticSpots)
